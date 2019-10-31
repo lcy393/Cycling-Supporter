@@ -1,0 +1,51 @@
+create table 문
+
+데이터베이스명: cs_db
+--------------------
+ CREATE TABLE `admin` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(12) DEFAULT NULL,
+  `pw` varchar(128) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `admin_unique_id` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2013152014 DEFAULT CHARSET=utf8
+
+CREATE TABLE `user` (
+  `id` varchar(10) NOT NULL,
+  `pw` varchar(128) DEFAULT NULL,
+  `name` varchar(20) DEFAULT NULL,
+  `email` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+CREATE TABLE `user_path` (
+  `id` varchar(10) NOT NULL,
+  `path` varchar(128) NOT NULL,
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY `path` (`path`),
+  UNIQUE KEY `time` (`time`),
+  KEY `user_path_ibfk_1` (`id`),
+  CONSTRAINT `user_path_ibfk_1` FOREIGN KEY (`id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+CREATE TABLE `user_session` (
+  `id` varchar(10) NOT NULL,
+  `ip_ver` int(1) unsigned NOT NULL,
+  `ip_v4` binary(4) DEFAULT NULL,
+  `ip_v6` binary(16) DEFAULT NULL,
+  `last` timestamp NOT NULL,
+  `session` varchar(128) NOT NULL,
+  PRIMARY KEY (`session`),
+  UNIQUE KEY `session_2` (`session`),
+  KEY `id` (`id`),
+  CONSTRAINT `user_session_ibfk_1` FOREIGN KEY (`id`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+CREATE TABLE `received_text` (
+  `time` datetime DEFAULT NULL,
+  `ip_ver` int(1) unsigned DEFAULT NULL,
+  `ip_v4` binary(4) DEFAULT NULL,
+  `ip_v6` binary(16) DEFAULT NULL,
+  `user_agent` varchar(511) DEFAULT NULL,
+  `text` varchar(511) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
